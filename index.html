@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil — Nom de l'Entreprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand">
+                <img src="images/logo.png" alt="Logo" class="nav-logo-img">
+                <div>
+                    <span class="nav-brand-name">Nom de l'Entreprise</span>
+                    <span class="nav-brand-tagline">Produits Naturels · Région</span>
+                </div>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-link active">Accueil</a></li>
+                <li><a href="produits.html" class="nav-link">Produits</a></li>
+                <li><a href="livraison.html" class="nav-link">Livraison</a></li>
+                <li><a href="apropos.html" class="nav-link">À propos</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="application.html" class="nav-link nav-link--app"><i class="fab fa-android"></i> App</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow">Bienvenue</p>
+            <h1 class="hero-title">Des produits<br><em>authentiques</em>,<br>issus du terroir</h1>
+            <p class="hero-subtitle">
+                Découvrez notre sélection soigneusement choisie de produits naturels de qualité supérieure, 
+                livrés directement depuis nos ateliers jusqu'à votre porte.
+            </p>
+            <div class="hero-actions">
+                <a href="produits.html" class="btn btn--primary">Voir notre catalogue <i class="fas fa-arrow-right"></i></a>
+                <a href="apropos.html" class="btn btn--ghost">Notre histoire</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-img-wrap">
+                <img src="images/home.jpg" alt="Produit phare" class="hero-img">
+                <div class="hero-badge">
+                    <i class="fas fa-leaf"></i>
+                    <span>100 % Naturel</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== ARGUMENTS CLÉS ===== -->
+    <section class="features-strip">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-seedling"></i></div>
+                    <div>
+                        <strong>Filières Contrôlées</strong>
+                        <span>Traçabilité totale de la production</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-truck"></i></div>
+                    <div>
+                        <strong>Livraison Rapide</strong>
+                        <span>Partout au pays & en Europe</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <strong>Paiement Sécurisé</strong>
+                        <span>CB ou paiement à la réception</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-award"></i></div>
+                    <div>
+                        <strong>Qualité Certifiée</strong>
+                        <span>Normes sanitaires respectées</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PRODUITS PHARES ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-eyebrow">Notre Sélection</p>
+                <h2 class="section-title">Produits Phares</h2>
+                <p class="section-desc">Une gamme soigneusement sélectionnée, issue de productions locales maîtrisées.</p>
+            </div>
+            <div class="products-grid products-grid--3">
+                <article class="product-card">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Huile dArgan Alime.webp" alt="Catégorie Huile" class="product-card__img">
+                        <span class="product-card__badge">Bestseller</span>
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Catégorie</p>
+                        <h3 class="product-card__name">Huile dArgan Alim</h3>
+                        <p class="product-card__desc">Description courte mettant en valeur les atouts naturels et l'authenticité du produit.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD</span>
+                            <a href="produits.html" class="btn btn--sm btn--primary">Voir</a>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-card__img-wrap">
+                        <img src="images/amlou.jpg" alt="Catégorie Amlou" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Catégorie</p>
+                        <h3 class="product-card__name">Nom du Produit Secondaire</h3>
+                        <p class="product-card__desc">Description courte mettant en avant la qualité artisanale et les ingrédients du terroir.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD</span>
+                            <a href="produits.html" class="btn btn--sm btn--primary">Voir</a>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Huile dOlive.webp" alt="Catégorie Huile" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Catégorie</p>
+                        <h3 class="product-card__name">Huile dOlive</h3>
+                        <p class="product-card__desc">Description courte soulignant les propriétés naturelles et les usages du produit.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD</span>
+                            <a href="produits.html" class="btn btn--sm btn--primary">Voir</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="section-cta">
+                <a href="produits.html" class="btn btn--outline">Voir tout le catalogue <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BANNIÈRE CTA ===== -->
+    <section class="cta-banner">
+        <div class="container">
+            <div class="cta-banner__inner">
+                <div>
+                    <h2 class="cta-banner__title">Commandez facilement via WhatsApp</h2>
+                    <p class="cta-banner__text">Notre équipe vous répond rapidement et vous accompagne dans votre choix.</p>
+                </div>
+                <a href="https://wa.me/VOTRE_NUMERO" target="_blank" class="btn btn--whatsapp">
+                    <i class="fab fa-whatsapp"></i> Nous contacter
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TÉMOIGNAGES (Placeholder) ===== -->
+    <section class="section section--alt">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-eyebrow">Ils nous font confiance</p>
+                <h2 class="section-title">Avis Clients</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Qualité exceptionnelle, livraison rapide et emballage soigné. Je recommande vivement ces produits authentiques à tous mes proches."</p>
+                    <span class="testimonial-author">— Client Satisfait, Ville</span>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Des saveurs authentiques comme on n'en trouve plus facilement. Le service client est très réactif et professionnel."</p>
+                    <span class="testimonial-author">— Client Fidèle, Ville</span>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Commandé depuis l'Europe, reçu rapidement et en parfait état. Ces produits du terroir sont d'une qualité rare."</p>
+                    <span class="testimonial-author">— Client International, Pays</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="images/logo.png" alt="Logo" class="footer-logo">
+                    <p>Nom de l'Entreprise — producteur et distributeur de produits naturels du terroir depuis [Année].</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" class="social-link social-link--fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" class="social-link social-link--ig" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" class="social-link social-link--yt" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" target="_blank" class="social-link social-link--wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Navigation</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="produits.html">Produits</a></li>
+                        <li><a href="livraison.html">Livraison</a></li>
+                        <li><a href="apropos.html">À propos</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Informations</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="cgv.html">CGV</a></li>
+                        <li><a href="application.html">App Android</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Contact</h4>
+                    <ul class="footer-col__links footer-col__links--contact">
+                        <li><i class="fas fa-map-marker-alt"></i> Adresse complète, Ville</li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+212633548605">+212 6 33 54 86 05</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:contact@entreprise.com">contact@entreprise.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Nom de l'Entreprise · Tous droits réservés</p>
+                <p>Site conçu pour démonstration — Template générique</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

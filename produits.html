@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits — Nom de l'Entreprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ================================================================
+           PANIER — styles spécifiques à la page produits uniquement
+           ================================================================ */
+
+        /* --- Bouton panier flottant --- */
+        .cart-fab {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--color-green-dark);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 22px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(26,68,48,.35);
+            transition: transform .25s, background .25s, opacity .25s;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .cart-fab.visible { opacity: 1; pointer-events: auto; }
+        .cart-fab:hover { background: var(--color-green); transform: translateY(-3px); }
+        .cart-fab__badge {
+            background: var(--color-gold);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+
+        /* --- Overlay + Drawer --- */
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,20,12,.45);
+            z-index: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+        }
+        .cart-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: min(420px, 100vw);
+            background: var(--color-cream);
+            z-index: 700;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform .35s cubic-bezier(.25,.46,.45,.94);
+            box-shadow: -8px 0 40px rgba(26,68,48,.15);
+        }
+        .cart-drawer.open { transform: translateX(0); }
+
+        .cart-drawer__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--color-border);
+            background: var(--color-white);
+        }
+        .cart-drawer__title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-green-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cart-drawer__title i { color: var(--color-green); }
+        .cart-drawer__close {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+        }
+        .cart-drawer__close:hover { background: var(--color-green-light); color: var(--color-green-dark); }
+
+        .cart-drawer__body { flex: 1; overflow-y: auto; padding: 16px 24px; }
+
+        /* État vide */
+        .cart-empty { text-align: center; padding: 60px 20px; color: var(--color-text-muted); }
+        .cart-empty i { font-size: 3rem; color: var(--color-border); display: block; margin-bottom: 16px; }
+        .cart-empty p { font-size: 0.9rem; font-weight: 300; }
+
+        /* Ligne article */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item__info { flex: 1; min-width: 0; }
+        .cart-item__name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-green-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cart-item__price {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            font-weight: 300;
+            margin-top: 2px;
+        }
+        .cart-item__qty {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .cart-item__qty-btn {
+            width: 26px;
+            height: 26px;
+            border: 1px solid var(--color-border);
+            background: var(--color-white);
+            border-radius: 50%;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-green-dark);
+            transition: background .2s, border-color .2s;
+        }
+        .cart-item__qty-btn:hover { background: var(--color-green-light); border-color: var(--color-green); }
+        .cart-item__qty-val { font-size: 0.9rem; font-weight: 600; min-width: 20px; text-align: center; }
+        .cart-item__remove {
+            background: none; border: none; color: #ccc; cursor: pointer;
+            font-size: 0.85rem; padding: 4px; transition: color .2s; flex-shrink: 0;
+        }
+        .cart-item__remove:hover { color: #e05555; }
+
+        /* Pied du drawer */
+        .cart-drawer__foot {
+            padding: 20px 24px;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-white);
+        }
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .cart-total__label { font-size: 0.88rem; color: var(--color-text-muted); }
+        .cart-total__amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--color-green-dark); }
+        .cart-total__note { font-size: 0.72rem; color: var(--color-text-muted); font-weight: 300; margin-bottom: 16px; line-height: 1.5; }
+        .btn-cart-whatsapp { width: 100%; justify-content: center; font-size: 1rem; padding: 15px; }
+        .btn-clear-cart {
+            width: 100%; margin-top: 10px; background: none;
+            border: 1px solid var(--color-border); color: var(--color-text-muted);
+            border-radius: var(--radius-xl); padding: 9px; font-family: var(--font-body);
+            font-size: 0.82rem; cursor: pointer; transition: background .2s, color .2s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-clear-cart:hover { background: #fff0f0; color: #e05555; border-color: #f5b5b5; }
+
+        /* --- Contrôles sur les cards --- */
+        .product-card__actions {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .qty-stepper {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            background: var(--color-cream);
+            flex-shrink: 0;
+        }
+        .qty-stepper__btn {
+            width: 30px;
+            height: 30px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--color-green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+        }
+        .qty-stepper__btn:hover { background: var(--color-green-light); }
+        .qty-stepper__val { min-width: 26px; text-align: center; font-size: 0.88rem; font-weight: 600; color: var(--color-text); }
+
+        .btn-add-cart {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: var(--color-green);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-xl);
+            padding: 8px 12px;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .25s, transform .2s;
+            white-space: nowrap;
+        }
+        .btn-add-cart:hover { background: var(--color-green-dark); transform: translateY(-1px); }
+        .btn-add-cart.added { background: var(--color-gold); animation: pulse-add .3s ease; }
+        @keyframes pulse-add {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.07); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Mobile : 2 produits par ligne (≤ 540px) --- */
+        @media (max-width: 540px) {
+            .products-grid--4 { grid-template-columns: repeat(2, 1fr) !important; }
+            .product-card__body { padding: 10px; }
+            .product-card__desc { display: none; }
+            .product-card__actions { flex-direction: column; gap: 6px; }
+            .qty-stepper { width: 100%; justify-content: center; }
+            .btn-add-cart { width: 100%; font-size: 0.78rem; }
+            .cart-fab { right: 50%; transform: translateX(50%); bottom: 20px; }
+            .cart-fab.visible:hover { transform: translateX(50%) translateY(-3px); }
+        }
+
+        /* --- Badge unité sur les cards --- */
+        .product-unit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: var(--color-green-light);
+            color: var(--color-green-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.4px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand">
+                <img src="images/logo.png" alt="Logo" class="nav-logo-img">
+                <div>
+                    <span class="nav-brand-name">Nom de l'Entreprise</span>
+                    <span class="nav-brand-tagline">Produits Naturels · Région</span>
+                </div>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-link">Accueil</a></li>
+                <li><a href="produits.html" class="nav-link active">Produits</a></li>
+                <li><a href="livraison.html" class="nav-link">Livraison</a></li>
+                <li><a href="apropos.html" class="nav-link">À propos</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="application.html" class="nav-link nav-link--app"><i class="fab fa-android"></i> App</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== PAGE HERO ===== -->
+    <header class="page-hero">
+        <p class="page-hero__eyebrow">Notre Sélection</p>
+        <h1 class="page-hero__title">Notre <em>Catalogue</em></h1>
+        <p class="page-hero__subtitle">Tous nos produits naturels, fabriqués selon des méthodes traditionnelles et respectant les normes sanitaires en vigueur.</p>
+    </header>
+
+    <!-- ===== CATALOGUE ===== -->
+    <section class="section">
+        <div class="container">
+
+            <!-- Filtres -->
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">Tout voir</button>
+                <button class="filter-btn" data-filter="miel">Miel</button>
+                <button class="filter-btn" data-filter="amlou">Amlou</button>
+                <button class="filter-btn" data-filter="huile">Huile</button>
+                <button class="filter-btn" data-filter="bienetre">Bien-être</button>
+				<button class="filter-btn" data-filter="autre">Autre</button>
+            </div>
+
+            <!-- Grille Produits -->
+            <div class="products-grid products-grid--4">
+
+                <!-- Miel -->
+                <article class="product-card" data-category="miel">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Miel de Thym.webp" alt="Miel de Thym" class="product-card__img">
+                        
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Miel</p>
+                        <h3 class="product-card__name">Miel de Thym</h3>
+                        <p class="product-card__desc">Description courte et percutante du produit. Mettre en avant la qualité ou l'origine.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">Kg</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit A" data-price="99" data-unit="Kg">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="miel">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Miel de Sidr.webp" alt="Miel de Sidr" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Miel</p>
+                        <h3 class="product-card__name">Miel de Sidr</h3>
+                        <p class="product-card__desc">Description courte soulignant les bienfaits et l'authenticité de ce produit naturel.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">Kg</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit B" data-price="99" data-unit="Kg">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="miel">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Miel de Thym.webp" alt="Produit C" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Miel</p>
+                        <h3 class="product-card__name">Miel</h3>
+                        <p class="product-card__desc">Description courte valorisant l'origine géographique ou les propriétés spécifiques.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">Kg</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit C" data-price="99" data-unit="Kg">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="miel">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Miel de Thym.webp" alt="Produit D" class="product-card__img">
+                        <span class="product-card__badge">Nouveau</span>
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Miel</p>
+                        <h3 class="product-card__name">Miel de Thym</h3>
+                        <p class="product-card__desc">Description courte mettant en avant une variante ou une saveur particulière du produit.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">Kg</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit D" data-price="99" data-unit="Kg">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Amlou -->
+                <article class="product-card" data-category="amlou">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Amlou.webp" alt="Produit E" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Amlou</p>
+                        <h3 class="product-card__name">Amlou</h3>
+                        <p class="product-card__desc">Description courte valorisant la recette artisanale et les ingrédients d'exception.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">Kg</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit E" data-price="99" data-unit="Kg">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="amlou">
+                    <div class="product-card__img-wrap">
+                        <img src="images/amlou.jpg" alt="Produit F" class="product-card__img">
+                        <span class="product-card__badge">Artisanal</span>
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Amlou</p>
+                        <h3 class="product-card__name">Nom du Produit F</h3>
+                        <p class="product-card__desc">Description courte mettant en avant les ingrédients nobles et la préparation traditionnelle.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">Kg</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit F" data-price="99" data-unit="Kg">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Huile -->
+                <article class="product-card" data-category="huile">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Huile dArgan Alime.webp" alt="Produit G" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Huile</p>
+                        <h3 class="product-card__name">Huile dArgan Alim</h3>
+                        <p class="product-card__desc">Description courte valorisant la pureté, l'extraction à froid ou l'utilisation cosmétique.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">L</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit G" data-price="99" data-unit="L">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="huile">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Huile dOlive.webp" alt="Produit H" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Huile</p>
+                        <h3 class="product-card__name">Huile dOlive</h3>
+                        <p class="product-card__desc">Description courte mentionnant l'appellation d'origine ou le terroir de production.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">L</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit H" data-price="99" data-unit="L">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Bien-être -->
+                <article class="product-card" data-category="bienetre">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Savon Beldi.webp" alt="Produit I" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Bien-être</p>
+                        <h3 class="product-card__name">Savon Beldi</h3>
+                        <p class="product-card__desc">Description courte mettant en avant les vertus naturelles et les bienfaits pour la santé.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">g</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit I" data-price="99" data-unit="g">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="bienetre">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Ghassoul.webp" alt="Produit J" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Bien-être</p>
+                        <h3 class="product-card__name">Ghassoul Beldi</h3>
+                        <p class="product-card__desc">Description courte mettant en avant la provenance naturelle et les méthodes de production.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">g</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit J" data-price="99" data-unit="g">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="bienetre">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Eau de Rose.webp" alt="Produit K" class="product-card__img">
+                        <span class="product-card__badge">Premium</span>
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Bien-être</p>
+                        <h3 class="product-card__name">Eau de Rose</h3>
+                        <p class="product-card__desc">Description courte valorisant le positionnement premium et les bénéfices exclusifs du produit.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">g</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit K" data-price="99" data-unit="g">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+				
+	<!-- Autre -->
+                <article class="product-card" data-category="autre">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Safran.webp" alt="Produit G" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Autre</p>
+                        <h3 class="product-card__name">Safran Taliwine</h3>
+                        <p class="product-card__desc">Description courte valorisant la pureté, l'extraction à froid ou l'utilisation cosmétique.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">L</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit G" data-price="99" data-unit="L">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="huile">
+                    <div class="product-card__img-wrap">
+                        <img src="images/Huile Habba Sawda.webp" alt="Produit H" class="product-card__img">
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__category">Autre</p>
+                        <h3 class="product-card__name">Huile Habba Sawda</h3>
+                        <p class="product-card__desc">Description courte mentionnant l'appellation d'origine ou le terroir de production.</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">99 MAD <span class="product-unit-badge">L</span></span>
+                        </div>
+                        <div class="product-card__actions">
+                            <div class="qty-stepper">
+                                <button class="qty-stepper__btn qty-minus">−</button>
+                                <span class="qty-stepper__val">1</span>
+                                <button class="qty-stepper__btn qty-plus">+</button>
+                            </div>
+                            <button class="btn-add-cart" data-name="Nom du Produit H" data-price="99" data-unit="L">
+                                <i class="fas fa-cart-plus"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </div><!-- /products-grid -->
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-banner">
+        <div class="container">
+            <div class="cta-banner__inner">
+                <div>
+                    <h2 class="cta-banner__title">Un produit ne figure pas dans la liste ?</h2>
+                    <p class="cta-banner__text">Contactez-nous directement, nous vous proposerons la meilleure solution.</p>
+                </div>
+                <a href="contact.html" class="btn btn--primary">Nous contacter <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="images/logo.png" alt="Logo" class="footer-logo">
+                    <p>Nom de l'Entreprise — producteur et distributeur de produits naturels du terroir depuis [Année].</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link social-link--fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link social-link--ig" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link social-link--yt" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link social-link--wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Navigation</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="produits.html">Produits</a></li>
+                        <li><a href="livraison.html">Livraison</a></li>
+                        <li><a href="apropos.html">À propos</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Informations</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="cgv.html">CGV</a></li>
+                        <li><a href="application.html">App Android</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Contact</h4>
+                    <ul class="footer-col__links footer-col__links--contact">
+                        <li><i class="fas fa-map-marker-alt"></i> Adresse complète, Ville</li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+212633548605">+212 6 33 54 86 05</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#167579786277756256737862647366647f65733875797b"><span class="__cf_email__" data-cfemail="60030f0e1401031420050e14120510120913054e030f0d">[email&#160;protected]</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Nom de l'Entreprise · Tous droits réservés</p>
+                <p>Template générique — personnalisable</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== BOUTON PANIER FLOTTANT ===== -->
+    <button class="cart-fab" id="cartFab" aria-label="Voir le panier">
+        <i class="fas fa-shopping-basket"></i>
+        <span>Mon panier</span>
+        <span class="cart-fab__badge" id="cartFabBadge">0</span>
+    </button>
+
+    <!-- ===== OVERLAY ===== -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- ===== DRAWER PANIER ===== -->
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Panier">
+        <div class="cart-drawer__head">
+            <span class="cart-drawer__title"><i class="fas fa-shopping-basket"></i> Mon Panier</span>
+            <button class="cart-drawer__close" id="cartClose" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-drawer__body" id="cartBody"></div>
+        <div class="cart-drawer__foot" id="cartFoot" style="display:none;">
+            <div class="cart-total">
+                <span class="cart-total__label">Sous-total</span>
+                <span class="cart-total__amount" id="cartTotal">0 MAD</span>
+            </div>
+            <div class="cart-total" style="margin-top:6px;">
+                <span class="cart-total__label"><i class="fas fa-truck" style="margin-right:5px;font-size:0.8rem;"></i>Livraison</span>
+                <span class="cart-total__amount" id="cartShipping" style="font-size:1rem;">—</span>
+            </div>
+            <div class="cart-total" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--color-border);">
+                <span class="cart-total__label" style="font-weight:600;color:var(--color-green-dark);">Total TTC</span>
+                <span class="cart-total__amount" id="cartGrandTotal" style="font-size:1.4rem;">0 MAD</span>
+            </div>
+            <p class="cart-total__note" id="cartShippingNote" style="margin-top:8px;">Livraison offerte dès 499 MAD</p>
+            <button class="btn btn--whatsapp btn-cart-whatsapp" id="btnCartWhatsapp">
+                <i class="fab fa-whatsapp"></i> Passer la commande via WhatsApp
+            </button>
+            <button class="btn-clear-cart" id="btnClearCart">
+                <i class="fas fa-trash-alt"></i> Vider le panier
+            </button>
+        </div>
+    </aside>
+
+    <script src="main.js"></script>
+</body>
+</html>

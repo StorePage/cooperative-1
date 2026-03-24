@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livraison — Nom de l'Entreprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand">
+                <img src="images/logo.png" alt="Logo" class="nav-logo-img">
+                <div>
+                    <span class="nav-brand-name">Nom de l'Entreprise</span>
+                    <span class="nav-brand-tagline">Produits Naturels · Région</span>
+                </div>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-link">Accueil</a></li>
+                <li><a href="produits.html" class="nav-link">Produits</a></li>
+                <li><a href="livraison.html" class="nav-link active">Livraison</a></li>
+                <li><a href="apropos.html" class="nav-link">À propos</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="application.html" class="nav-link nav-link--app"><i class="fab fa-android"></i> App</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-hero">
+        <p class="page-hero__eyebrow">Expédition & Réception</p>
+        <h1 class="page-hero__title">Nos modes de <em>Livraison</em></h1>
+        <p class="page-hero__subtitle">Nous livrons partout dans le pays et en Europe. Découvrez nos délais, conditions et partenaires logistiques.</p>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="delivery-grid">
+
+                <div class="delivery-card">
+                    <div class="delivery-card__icon"><i class="fas fa-truck"></i></div>
+                    <h2 class="delivery-card__title">Livraison Nationale</h2>
+                    <p>Nous livrons dans <strong>toutes les villes du pays</strong> via nos partenaires logistiques de confiance.</p>
+                    <p><i class="fas fa-check-circle" style="color:var(--color-green)"></i> <strong>Paiement à la réception :</strong> Vous ne payez qu'une fois votre colis reçu et vérifié.</p>
+                    <p><i class="fas fa-clock" style="color:var(--color-green)"></i> <strong>Délais :</strong> Généralement 24h à 72h selon votre ville.</p>
+                    <p><i class="fas fa-box" style="color:var(--color-green)"></i> <strong>Emballage :</strong> Soigné et adapté pour garantir l'intégrité des produits.</p>
+                </div>
+
+                <div class="delivery-card">
+                    <div class="delivery-card__icon"><i class="fas fa-plane-departure"></i></div>
+                    <h2 class="delivery-card__title">Livraison Internationale</h2>
+                    <p>Nous exportons nos produits vers l'Europe grâce à des partenaires spécialisés dans le transport alimentaire.</p>
+                    <p><i class="fas fa-wallet" style="color:var(--color-green)"></i> <strong>Condition :</strong> Paiement sécurisé requis <u>avant l'expédition</u>.</p>
+                    <p><i class="fas fa-clock" style="color:var(--color-green)"></i> <strong>Délais :</strong> Généralement 5 à 10 jours ouvrables.</p>
+                    <p><strong>Pays desservis :</strong></p>
+                    <div class="country-tags">
+                        <span class="country-tag">🇫🇷 France</span>
+                        <span class="country-tag">🇪🇸 Espagne</span>
+                        <span class="country-tag">🇧🇪 Belgique</span>
+                        <span class="country-tag">🇮🇹 Italie</span>
+                        <span class="country-tag">🇩🇪 Allemagne</span>
+                        <span class="country-tag">🇳🇱 Pays-Bas</span>
+                        <span class="country-tag">🌍 Autres pays sur demande</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Info box -->
+            <div style="background:var(--color-gold-light); border-radius:var(--radius-lg); padding:var(--space-xl); border-left: 4px solid var(--color-gold); max-width:760px; margin-inline:auto;">
+                <h3 style="font-family:var(--font-display); color:var(--color-green-dark); margin-bottom:var(--space-sm); display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-info-circle" style="color:var(--color-gold)"></i> À savoir avant de commander
+                </h3>
+                <p style="color:var(--color-text-muted); font-size:0.92rem; line-height:1.75;">
+                    Les produits alimentaires étant des denrées périssables, nous mettons tout en œuvre pour expédier les commandes dans les meilleurs délais. En cas de retard dû au transporteur, notre équipe reste disponible pour vous accompagner. N'hésitez pas à nous contacter pour tout suivi de commande.
+                </p>
+            </div>
+
+            <div class="section-cta" style="margin-top:var(--space-xl);">
+                <p style="color:var(--color-text-muted); margin-bottom:var(--space-md);">Une question sur votre zone de livraison ?</p>
+                <a href="contact.html" class="btn btn--primary">Nous contacter <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="images/logo.png" alt="Logo" class="footer-logo">
+                    <p>Nom de l'Entreprise — producteur et distributeur de produits naturels du terroir depuis [Année].</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link social-link--fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link social-link--ig" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link social-link--yt" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link social-link--wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Navigation</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="produits.html">Produits</a></li>
+                        <li><a href="livraison.html">Livraison</a></li>
+                        <li><a href="apropos.html">À propos</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Informations</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="cgv.html">CGV</a></li>
+                        <li><a href="application.html">App Android</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Contact</h4>
+                    <ul class="footer-col__links footer-col__links--contact">
+                        <li><i class="fas fa-map-marker-alt"></i> Adresse complète, Ville</li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+XXXXXXXXXXX">+XX XXX XXX XXX</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:contact@entreprise.com">contact@entreprise.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Nom de l'Entreprise · Tous droits réservés</p>
+                <p>Template générique — personnalisable</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

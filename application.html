@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Mobile — Nom de l'Entreprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand">
+                <img src="images/logo.png" alt="Logo" class="nav-logo-img">
+                <div>
+                    <span class="nav-brand-name">Nom de l'Entreprise</span>
+                    <span class="nav-brand-tagline">Produits Naturels · Région</span>
+                </div>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-link">Accueil</a></li>
+                <li><a href="produits.html" class="nav-link">Produits</a></li>
+                <li><a href="livraison.html" class="nav-link">Livraison</a></li>
+                <li><a href="apropos.html" class="nav-link">À propos</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="application.html" class="nav-link nav-link--app active"><i class="fab fa-android"></i> App</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="section app-page">
+        <div class="container">
+
+            <div class="app-icon">
+                <i class="fab fa-android"></i>
+            </div>
+
+            <h1>Notre Application Mobile</h1>
+            <p>
+                Profitez d'une expérience de commande plus fluide et rapide directement depuis votre smartphone.
+                Installez l'application officielle <strong>Nom de l'Entreprise</strong> sur votre téléphone Android.
+            </p>
+
+            <div class="download-box">
+                <h3>Version X.X (APK Android)</h3>
+                <p>Fichier sécurisé ✅ &nbsp;·&nbsp; Taille : ~XX Mo &nbsp;·&nbsp; Compatible Android 8+</p>
+                <!-- ⚠️ PERSONNALISER : remplacer le href par le lien de téléchargement réel -->
+                <a href="LIEN_APK_ICI" class="btn btn--primary" download style="font-size:1.05rem; padding:16px 36px;">
+                    <i class="fas fa-download"></i> Télécharger l'Application
+                </a>
+            </div>
+
+            <div class="install-steps">
+                <h3><i class="fas fa-info-circle"></i> Comment installer l'application ?</h3>
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <p>Cliquez sur le bouton <strong>"Télécharger"</strong> ci-dessus pour lancer le téléchargement du fichier APK.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <p>Une fois le téléchargement terminé, <strong>ouvrez le fichier</strong> depuis les notifications ou votre gestionnaire de fichiers.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <p>Si votre téléphone affiche un avertissement de sécurité, appuyez sur <strong>"Paramètres"</strong> et activez <strong>"Sources inconnues"</strong> ou <strong>"Installation d'applications inconnues"</strong>.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">4</span>
+                    <p>Appuyez sur <strong>"Installer"</strong> et profitez de notre catalogue en un seul clic !</p>
+                </div>
+            </div>
+
+            <div style="margin-top:var(--space-xl); padding:var(--space-lg); background:var(--color-gold-light); border-radius:var(--radius-lg); max-width:520px; margin-inline:auto;">
+                <p style="font-size:0.88rem; color:var(--color-text-muted); text-align:center; line-height:1.7;">
+                    <i class="fas fa-shield-alt" style="color:var(--color-gold); margin-right:6px;"></i>
+                    <strong style="color:var(--color-green-dark);">Sécurité garantie.</strong> Ce fichier APK est distribué directement par notre équipe et a été vérifié avant publication. Aucune donnée personnelle n'est collectée sans votre consentement.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="images/logo.png" alt="Logo" class="footer-logo">
+                    <p>Nom de l'Entreprise — producteur et distributeur de produits naturels du terroir depuis [Année].</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link social-link--fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link social-link--ig" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link social-link--yt" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link social-link--wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Navigation</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="produits.html">Produits</a></li>
+                        <li><a href="livraison.html">Livraison</a></li>
+                        <li><a href="apropos.html">À propos</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Informations</h4>
+                    <ul class="footer-col__links">
+                        <li><a href="cgv.html">CGV</a></li>
+                        <li><a href="application.html">App Android</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">Contact</h4>
+                    <ul class="footer-col__links footer-col__links--contact">
+                        <li><i class="fas fa-map-marker-alt"></i> Adresse complète, Ville</li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+XXXXXXXXXXX">+XX XXX XXX XXX</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:contact@entreprise.com">contact@entreprise.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Nom de l'Entreprise · Tous droits réservés</p>
+                <p>Template générique — personnalisable</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
